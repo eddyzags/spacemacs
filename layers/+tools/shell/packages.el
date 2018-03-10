@@ -1,6 +1,6 @@
 ;;; packages.el --- shell packages File for Spacemacs
 ;;
-;; Copyright (c) 2012-2018 Sylvain Benner & Contributors
+;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;
 ;; Author: Sylvain Benner <sylvain.benner@gmail.com>
 ;; URL: https://github.com/syl20bnr/spacemacs
@@ -38,7 +38,8 @@
   (spacemacs|use-package-add-hook eshell
     :post-init
     (progn
-      (spacemacs|add-company-backends :backends company-capf :modes eshell-mode)
+      (push 'company-capf company-backends-eshell-mode)
+      (spacemacs|add-company-hook eshell-mode)
       (add-hook 'eshell-directory-change-hook
                 'spacemacs//toggle-shell-auto-completion-based-on-path)
       ;; The default frontend screws everything up in short windows like
@@ -83,23 +84,6 @@
       (add-hook 'eshell-mode-hook 'spacemacs/disable-hl-line-mode))
     :config
     (progn
-
-      ;; Work around bug in eshell's preoutput-filter code.
-      ;; Eshell doesn't call preoutput-filter functions in the context of the eshell
-      ;; buffer. This breaks the xterm color filtering when the eshell buffer is updated
-      ;; when it's not currently focused.
-      ;; To remove if/when fixed upstream.
-      (defun eshell-output-filter@spacemacs-with-buffer (fn process string)
-        (let ((proc-buf (if process (process-buffer process)
-                          (current-buffer))))
-          (when proc-buf
-            (with-current-buffer proc-buf
-              (funcall fn process string)))))
-      (advice-add
-       #'eshell-output-filter
-       :around
-       #'eshell-output-filter@spacemacs-with-buffer)
-
       (require 'esh-opt)
 
       ;; quick commands
@@ -122,7 +106,13 @@
 
       ;; automatically truncate buffer after output
       (when (boundp 'eshell-output-filter-functions)
-        (push 'eshell-truncate-buffer eshell-output-filter-functions)))))
+        (push 'eshell-truncate-buffer eshell-output-filter-functions))
+
+      ;; These don't work well in normal state
+      ;; due to evil/emacs cursor incompatibility
+      (evil-define-key 'insert eshell-mode-map
+        (kbd "C-k") 'eshell-previous-matching-input-from-input
+        (kbd "C-j") 'eshell-next-matching-input-from-input))))
 
 (defun shell/init-eshell-prompt-extras ()
   (use-package eshell-prompt-extras

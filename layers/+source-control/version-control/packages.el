@@ -1,6 +1,6 @@
 ;;; packages.el --- Source Control Layer packages File for Spacemacs
 ;;
-;; Copyright (c) 2012-2018 Sylvain Benner & Contributors
+;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;
 ;; Author: Sylvain Benner <sylvain.benner@gmail.com>
 ;; URL: https://github.com/syl20bnr/spacemacs
@@ -11,8 +11,6 @@
 
 (setq version-control-packages
       '(
-        browse-at-remote
-        (vc :location built-in)
         diff-mode
         diff-hl
         evil-unimpaired
@@ -23,101 +21,25 @@
         (smerge-mode :location built-in)
         ))
 
-(defun version-control/init-vc ()
-  (use-package vc
-    :defer t
-    :init
-    (spacemacs/declare-prefix "gv" "version-control")
-    :config
-    (progn
-      (spacemacs/set-leader-keys
-        "gvv" 'vc-next-action
-        "gvg" 'vc-annotate
-        "gvD" 'vc-root-diff
-        "gve" 'vc-ediff
-        "gvd" 'vc-dir
-        "gv+" 'vc-update
-        "gvi" 'vc-register
-        "gvu" 'vc-revert
-        "gvl" 'vc-print-log
-        "gvL" 'vc-print-root-log
-        "gvI" 'vc-ignore
-        "gvr" 'vc-resolve-conflicts)
-
-      (evilified-state-evilify vc-dir-mode vc-dir-mode-map
-        "j" 'vc-dir-next-line
-        (kbd "M-n") 'vc-dir-next-line
-        "k" 'vc-dir-previous-line
-        (kbd "M-p") 'vc-dir-previous-line
-        "gj" 'vc-dir-next-directory
-        (kbd "<tab>") 'vc-dir-next-directory
-        "gk" 'vc-dir-previous-directory
-        (kbd "<backtab>") 'vc-dir-previous-directory
-        "l" 'vc-print-log
-        "c" 'vc-next-action
-        "a" 'vc-annotate
-        "r" 'vc-dir-refresh
-        "E" 'vc-dir-ignore)
-
-      (evilified-state-evilify log-view-mode log-view-mode-map
-        (kbd "M-n") 'log-view-msg-next
-        (kbd "M-p") 'log-view-msg-prev
-        (kbd "C-j") 'log-view-msg-next
-        (kbd "C-k") 'log-view-msg-prev
-        "J" 'log-view-file-next
-        (kbd "<tab>") 'log-view-file-next
-        "gj" 'log-view-file-next
-        "K" 'log-view-file-prev
-        "gk" 'log-view-file-prev
-        (kbd "<backtab>") 'log-view-file-prev
-        (kbd "<return>") 'log-view-find-revision
-        "H" 'log-view-toggle-entry-display
-        "o" 'ace-link-woman)
-      (evilified-state-evilify vc-svn-log-view-mode vc-svn-log-view-mode-map)
-      (evilified-state-evilify vc-git-log-view-mode vc-git-log-view-mode-map)
-      (evilified-state-evilify vc-hg-log-view-mode vc-git-log-view-mode-map)
-      (evilified-state-evilify vc-annotate-mode vc-annotate-mode-map
-        "J" 'vc-annotate-next-revision
-        "K" 'vc-annotate-prev-revision
-        "L" 'vc-annotate-show-log-revision-at-line
-        "H" 'vc-annotate-toggle-annotation-visibility
-        "a" 'vc-annotate-revision-at-line
-        "p" 'vc-annotate-revision-previous-to-line))))
-
-
 (defun version-control/init-diff-mode ()
   (use-package diff-mode
     :defer t
     :config
     (evilified-state-evilify diff-mode diff-mode-map
-      (kbd "C-j") 'diff-hunk-next
-      (kbd "C-k") 'diff-hunk-prev
-      (kbd "M-n") 'diff-hunk-next
-      (kbd "M-p") 'diff-hunk-prev
-      "J" 'diff-file-next
-      (kbd "<tab>") 'diff-file-next
-      "gj" 'diff-file-next
-      "K" 'diff-file-prev
-      (kbd "<backtab>") 'diff-file-prev
-      "gk" 'diff-file-prev
-      "a" 'diff-apply-hunk
-      "r" 'spacemacs/diff-mode-revert-hunk
-      "S" 'diff-split-hunk
-      "D" 'diff-hunk-kill
-      "u" 'diff-undo)))
+      "j" 'diff-hunk-next
+      "k" 'diff-hunk-prev)))
 
 (defun version-control/init-diff-hl ()
   (use-package diff-hl
     :init
     (progn
-      (spacemacs/set-leader-keys "gv=" 'diff-hl-diff-goto-hunk)
       (setq diff-hl-side 'left)
       (when (eq version-control-diff-tool 'diff-hl)
-        (when (configuration-layer/package-used-p 'magit)
+        (when (configuration-layer/package-usedp 'magit)
           (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
-        (if version-control-global-margin
-            (run-with-idle-timer 1 nil 'global-diff-hl-mode)
-          (run-with-idle-timer 1 nil 'diff-hl-margin-mode))
+        (when version-control-global-margin
+          (global-diff-hl-mode))
+        (diff-hl-margin-mode)
         (spacemacs|do-after-display-system-init
          (setq diff-hl-side (if (eq version-control-diff-side 'left)
                                 'left 'right))
@@ -135,7 +57,10 @@
       ;; If you enable global minor mode
       (when (and (eq version-control-diff-tool 'git-gutter)
                  version-control-global-margin)
-        (run-with-idle-timer 1 nil 'global-git-gutter-mode))
+        (global-git-gutter-mode t))
+      ;; If you would like to use git-gutter.el and linum-mode
+      (if dotspacemacs-line-numbers
+          (git-gutter:linum-setup))
       (setq git-gutter:update-interval 2
             git-gutter:modified-sign " "
             git-gutter:added-sign "+"
@@ -186,14 +111,14 @@
 
 (defun version-control/init-git-gutter+ ()
   (use-package git-gutter+
-    :commands (global-git-gutter+-mode git-gutter+-mode git-gutter+-refresh)
+    :commands (global-git-gutter+-mode git-gutter+-mode)
     :init
     (progn
       ;; If you enable global minor mode
       (when (and (eq version-control-diff-tool 'git-gutter+)
                  version-control-global-margin)
         (add-hook 'magit-pre-refresh-hook 'git-gutter+-refresh)
-        (run-with-idle-timer 1 nil 'global-git-gutter+-mode))
+        (global-git-gutter+-mode t))
       (setq
        git-gutter+-modified-sign " "
        git-gutter+-added-sign "+"
@@ -283,8 +208,3 @@
         ("r" smerge-refine)
         ("u" undo-tree-undo)
         ("q" nil :exit t)))))
-
-(defun version-control/init-browse-at-remote ()
-  (use-package browse-at-remote
-    :defer t
-    :init (spacemacs/set-leader-keys "gho" 'browse-at-remote)))

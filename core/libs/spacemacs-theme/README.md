@@ -1,22 +1,22 @@
 # Spacemacs-theme
 
 [![MELPA](http://melpa.org/packages/spacemacs-theme-badge.svg)](http://melpa.org/#/spacemacs-theme) ![Made with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nashamri/spacemacs-theme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+ [![Join the chat at https://gitter.im/nashamri/spacemacs-theme](https://badges.gitter.im/Join%20Chat.svg)] (https://gitter.im/nashamri/spacemacs-theme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-![spacemacs-theme](img/spacemacs-theme.png)
+![spacemacs-theme](/../screenshots/spacemacs-theme.png)
 
 Spacemacs theme is an Emacs color theme that started as a theme for [spacemacs](https://github.com/syl20bnr/spacemacs).
 The theme comes with dark and light variants and it should work well with 256 color terminals.
 
 ## Screenshots
 
-![spacemacs-theme-preview](img/preview.png)
+![spacemacs-theme-preview](/../screenshots/preview.png)
 
 ## Highlights
 
 The theme has good support for org mode.
 
-![spacemacs-theme-org](img/org.png)
+![spacemacs-theme-org](/../screenshots/org.png)
 
 ## Installation
 
@@ -30,7 +30,6 @@ M-x package-install RET spacemacs-theme
 
 Some of the supported modes are:
 
-* calfw
 * company
 * ein
 * erc
@@ -38,9 +37,7 @@ Some of the supported modes are:
 * helm
 * ido
 * info
-* ledger
 * magit
-* mu4e
 * neotree
 * org
 * and others :) more are coming!
@@ -52,10 +49,6 @@ The theme has some options that can be tweaked via `M-x customize`:
 * `spacemacs-theme-comment-bg`:
 
 This toggles a background color for the comment lines.
-
-* `spacemacs-theme-comment-italic`:
-
-This toggles italics for comments and will also add a lighter color to it. It is recommended to disable `spacemacs-theme-comment-bg` if you turn this option on for better contrast.
 
 * `spacemacs-theme-org-agenda-height`:
 
@@ -137,7 +130,7 @@ There is also explicit colors variables that can be customized:
 * red-bg-s
 * blue
 * blue-bg
-* magenta
+* violet
 * yellow
 * yellow-bg
 
@@ -146,11 +139,11 @@ The `green-bg-s` and `red-bg-s` are a stronger version and are used in `ediff` a
 
 Here are some screenshots of the various variables:
 
-![spacemacs-theme-guide-generic](img/guide-generic.png)
+![spacemacs-theme-guide-generic](/../screenshots/guide-generic.png)
 
-![spacemacs-theme-guide-org](img/guide-org.png)
+![spacemacs-theme-guide-org](/../screenshots/guide-org.png)
 
-![spacemacs-theme-guide-extra](img/guide-extra.png)
+![spacemacs-theme-guide-extra](/../screenshots/guide-extra.png)
 
 If you are using [spacemacs](https://github.com/syl20bnr/spacemacs), you can put this snippet in your `dotspacemacs/user-init` to override these colors:
 

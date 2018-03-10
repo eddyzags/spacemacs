@@ -1,6 +1,6 @@
 ;;; packages.el --- Ansible Layer packages File for Spacemacs
 ;;
-;; Copyright (c) 2012-2018 Sylvain Benner & Contributors
+;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;
 ;; Author: Brian Hicks <brian@brianthicks.com>
 ;; URL: https://github.com/syl20bnr/spacemacs
@@ -12,28 +12,26 @@
       '(ansible
         ansible-doc
         company
-        (company-ansible :requires company)
+        (company-ansible :toggle (configuration-layer/package-usedp 'company))
         jinja2-mode
         yaml-mode))
 
 (defun ansible/init-ansible ()
   (use-package ansible
     :defer t
-    :commands ansible::auto-decrypt-encrypt
     :init
     (progn
       (add-hook 'yaml-mode-hook 'spacemacs/ansible-maybe-enable)
-      (put 'ansible::vault-password-file 'safe-local-variable #'stringp)
-      (if ansible-auto-encrypt-decrypt
-          ;; add this hook to local-vars-hook to allow users to specify
-          ;; a password file in directory local variables
-          (add-hook 'yaml-mode-local-vars-hook
-                    'spacemacs/ansible-auto-decrypt-encrypt-vault)
-        (remove-hook 'yaml-mode-local-vars-hook
-                     'spacemacs/ansible-auto-decrypt-encrypt-vault))
+      (if ansible-auto-encrypt-descrypt
+          (add-hook 'ansible-hook 'ansible::auto-decrypt-encrypt)
+        (remove-hook 'ansible-hook 'ansible::auto-decrypt-encrypt))
       (spacemacs/set-leader-keys-for-minor-mode 'ansible
         "bd" 'ansible::decrypt-buffer
-        "be" 'ansible::encrypt-buffer))))
+        "be" 'ansible::encrypt-buffer))
+    :config
+    ;; TODO to remove when fixed upstream
+    (advice-add 'ansible::decrypt-buffer
+                :after 'spacemacs//ansible-reset-buffer-modified)))
 
 (defun ansible/init-ansible-doc ()
   (use-package ansible-doc
@@ -41,9 +39,8 @@
     :init
     (progn
       (add-hook 'yaml-mode-hook 'spacemacs/ansible-doc-maybe-enable)
-      (with-eval-after-load 'ansible-doc
-        (spacemacs/set-leader-keys-for-minor-mode 'ansible-doc-mode
-          "ha" 'ansible-doc)))
+      (spacemacs/set-leader-keys-for-minor-mode 'ansible-doc-mode
+        "ha" 'ansible-doc))
     :config (spacemacs|hide-lighter ansible-doc-mode)))
 
 (defun ansible/post-init-company ()
