@@ -30,5 +30,6 @@
   (configuration-layer/sync)
   (spacemacs-buffer/display-startup-note)
   (spacemacs/setup-startup-hook)
+  (require 'org-inlinetask)
   (require 'server)
   (unless (server-running-p) (server-start)))
