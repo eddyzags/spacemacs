@@ -125,7 +125,7 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 'random
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -149,7 +149,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -243,7 +243,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -325,8 +325,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  exec-path-from-shell-variables '("PATH", "MANPATH")
-  )
+  (setq-default
+   exec-path-from-shell-variables '("PATH", "MANPATH")
+   ))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -335,14 +336,30 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/src_tree/inc/para.org")))
  '(org-capture-templates
    (quote
     (("t" "PARA Inbox template" entry
       (file+headline "~/src_tree/inc/para.org" "Inbox")
-      (file "~/src_tree/inc/templates/new_inbox.txt"))
+      (file "~/src_tree/inc/templates/new_inbox.txt")
+      :empty-lines-after 1)
      ("p" "PARA Project template" entry
       (file+headline "~/src_tree/inc/para.org" "Projects")
-      (file "~/src_tree/inc/templates/new_project.txt")))))
+      (file "~/src_tree/inc/templates/new_project.txt")
+      :empty-lines-after 1)
+     ("a" "PARA Area of responsability template" entry
+      (file+headline "~/src_tree/inc/para.org" "Areas of responsability")
+      (file "~/src_tree/inc/templates/new_area_of_responsability.txt")
+      :empty-lines-after 1)
+     ("d" "PARA Daily" entry
+      (file+headline "~/src_tree/inc/para.org" "Daily notes")
+      (file "~/src_tree/inc/templates/daily.txt")
+      :empty-lines-after 1 :clock-in t)
+     ("r" "PARA Resources" entry
+      (file+headline "~/src_tree/inc/para.org" "Resources")
+      (file "~/src_tree/inc/templates/new_resource.txt")
+      :empty-lines-after 1))))
+ '(org-hide-emphasis-markers t)
  '(package-selected-packages
    (quote
     (lv transient toml-mode racer flycheck-rust cargo rust-mode csv-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby gmail-message-mode ham-mode html-to-markdown flymd edit-server xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode yasnippet-snippets smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit ghub let-alist with-editor zenburn-theme flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet fuzzy company-statistics company-go company auto-yasnippet yasnippet ac-ispell auto-complete sql-indent markdown-toc mmm-mode markdown-mode gh-md yaml-mode go-guru go-eldoc go-mode spinner adaptive-wrap ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent ace-window ace-link ace-jump-helm-line helm avy helm-core popup async go-autocomplete auto-complete-confiyg))))
@@ -375,6 +392,6 @@ you should place your code here."
 
 ;; Org mode configuration
 (setq org-todo-keywords
-      '((sequence "TODO" "WAITING" "|" "DONE" "DELEGATED")))
+      '((sequence "TODO" "WAITING" "INPROGRESS" "|" "DONE" "DELEGATED")))
 (setq org-log-done 'note)
 (global-set-key (kbd "<f6>") 'org-capture)
