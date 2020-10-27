@@ -31,12 +31,13 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     javascript
      rust
      csv
      html
      python
      ruby
-     javascript
+     ;;javascript
      octave
      sql
      markdown
@@ -52,7 +53,6 @@ values."
      ;; better-defaults
      emacs-lisp
      git
-     markdown
      org
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -62,14 +62,13 @@ values."
      ;; version-control
      shell
      chrome
-     protobuf
      )
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(yasnippet-snippets)
+   dotspacemacs-additional-packages '(yasnippet-snippets zenburn-theme)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -81,7 +80,7 @@ values."
    ;; `used-but-keep-unused' installs only the used packages but won't uninstall
    ;; them if they become unused. `all' installs *all* packages supported by
    ;; Spacemacs and never uninstall them. (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+   dotspacemacs-install-packages 'used-but-keep-unused))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -336,10 +335,9 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/src_tree/inc/para.org")))
+ '(org-agenda-files '("~/src_tree/inc/para.org"))
  '(org-capture-templates
-   (quote
-    (("t" "PARA Inbox template" entry
+   '(("t" "PARA Inbox template" entry
       (file+headline "~/src_tree/inc/para.org" "Inbox")
       (file "~/src_tree/inc/templates/new_inbox.txt")
       :empty-lines-after 1)
@@ -354,15 +352,14 @@ you should place your code here."
      ("d" "PARA Daily" entry
       (file+headline "~/src_tree/inc/para.org" "Daily notes")
       (file "~/src_tree/inc/templates/daily.txt")
-      :empty-lines-after 1 :clock-in t)
+      :empty-lines 1 :empty-lines-after 1 :clock-in t)
      ("r" "PARA Resources" entry
       (file+headline "~/src_tree/inc/para.org" "Resources")
       (file "~/src_tree/inc/templates/new_resource.txt")
-      :empty-lines-after 1))))
+      :empty-lines-after 1)))
  '(org-hide-emphasis-markers t)
  '(package-selected-packages
-   (quote
-    (lv transient toml-mode racer flycheck-rust cargo rust-mode csv-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby gmail-message-mode ham-mode html-to-markdown flymd edit-server xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode yasnippet-snippets smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit ghub let-alist with-editor zenburn-theme flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet fuzzy company-statistics company-go company auto-yasnippet yasnippet ac-ispell auto-complete sql-indent markdown-toc mmm-mode markdown-mode gh-md yaml-mode go-guru go-eldoc go-mode spinner adaptive-wrap ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent ace-window ace-link ace-jump-helm-line helm avy helm-core popup async go-autocomplete auto-complete-confiyg))))
+   '(lv transient toml-mode racer flycheck-rust cargo rust-mode csv-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby gmail-message-mode ham-mode html-to-markdown flymd edit-server xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc tern dash-functional tern coffee-mode yasnippet-snippets smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit ghub let-alist with-editor flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet fuzzy company-statistics company-go company auto-yasnippet yasnippet ac-ispell auto-complete sql-indent markdown-toc mmm-mode markdown-mode gh-md yaml-mode go-guru go-eldoc go-mode spinner adaptive-wrap ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent ace-window ace-link ace-jump-helm-line helm avy helm-core popup async go-autocomplete auto-complete-confiyg)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -395,3 +392,5 @@ you should place your code here."
       '((sequence "TODO" "WAITING" "INPROGRESS" "|" "DONE" "DELEGATED")))
 (setq org-log-done 'note)
 (global-set-key (kbd "<f6>") 'org-capture)
+
+dotspacemacs-excluded-packages '(company-tern)
