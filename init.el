@@ -33,3 +33,14 @@
   (require 'org-inlinetask)
   (require 'server)
   (unless (server-running-p) (server-start)))
+
+(add-to-list 'load-path "~/.emacs.d/golang/")
+(load "go-autocomplete.el")
+
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(ac-config-default)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
