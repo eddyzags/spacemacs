@@ -68,7 +68,8 @@
     (org-trello :toggle org-enable-trello-support)
     (org-sticky-header :toggle org-enable-sticky-header)
     (verb :toggle org-enable-verb-support)
-    (org-roam :toggle org-enable-roam-support)
+;; Org-roam has already been activated using use-package in dotspacemacs/user-config.
+;    (org-roam :toggle org-enable-roam-support)
     (valign :toggle org-enable-valign)
     (org-appear :toggle org-enable-appear-support)
     (org-transclusion :toggle org-enable-transclusion-support)
@@ -923,60 +924,6 @@ Headline^^            Visit entry^^               Filter^^                    Da
         "mtdc" 'spacemacs/org-trello-pull-card
         "mtub" 'spacemacs/org-trello-push-buffer
         "mtuc" 'spacemacs/org-trello-push-card))))
-
-(defun org/init-org-roam ()
-  (use-package org-roam
-    :defer t
-    :hook (after-init . org-roam-setup)
-    :init
-    (progn
-      (spacemacs/declare-prefix
-        "aor"  "org-roam"
-        "aord" "org-roam-dailies"
-        "aort" "org-roam-tags")
-      (spacemacs/set-leader-keys
-        "aordy" 'org-roam-dailies-goto-yesterday
-        "aordt" 'org-roam-dailies-goto-today
-        "aordT" 'org-roam-dailies-goto-tomorrow
-        "aordd" 'org-roam-dailies-goto-date
-        "aorc" 'org-roam-capture
-        "aorf" 'org-roam-node-find
-        "aorg" 'org-roam-graph
-        "aori" 'org-roam-node-insert
-        "aorl" 'org-roam-buffer-toggle
-        "aorta" 'org-roam-tag-add
-        "aortr" 'org-roam-tag-remove
-        "aora" 'org-roam-alias-add)
-
-      (spacemacs/declare-prefix-for-mode 'org-mode "mr" "org-roam")
-      (spacemacs/declare-prefix-for-mode 'org-mode "mrd" "org-roam-dailies")
-      (spacemacs/declare-prefix-for-mode 'org-mode "mrt" "org-roam-tags")
-      (spacemacs/set-leader-keys-for-major-mode 'org-mode
-        "rdy" 'org-roam-dailies-goto-yesterday
-        "rdt" 'org-roam-dailies-goto-today
-        "rdT" 'org-roam-dailies-goto-tomorrow
-        "rdd" 'org-roam-dailies-goto-date
-        "rc" 'org-roam-capture
-        "rf" 'org-roam-node-find
-        "rg" 'org-roam-graph
-        "ri" 'org-roam-node-insert
-        "rl" 'org-roam-buffer-toggle
-        "rta" 'org-roam-tag-add
-        "rtr" 'org-roam-tag-remove
-        "ra" 'org-roam-alias-add))
-
-    :config
-    (progn
-      (spacemacs|hide-lighter org-roam-mode)
-      (when org-enable-roam-protocol
-          (add-hook 'org-roam-mode-hook (lambda ()
-                                          (require 'org-roam-protocol))))
-
-      (evilified-state-evilify-map org-roam-mode-map
-        :mode org-roam-mode
-        :bindings
-        "o" 'link-hint-open-link
-        "r" 'org-roam-buffer-refresh))))
 
 (defun org/init-org-sticky-header ()
   (use-package org-sticky-header
