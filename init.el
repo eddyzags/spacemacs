@@ -71,3 +71,22 @@
       (unless (server-running-p)
         (message "Starting a server...")
         (server-start)))))
+
+;(exec-path-from-shell-initialize)
+;(setenv "PATH" (concat (getenv "PATH") ":/home/eddyzags/src_tree/go/bin"))
+
+
+(setq
+  server-name "emacs"
+  server-socket-dir (getenv "XDG_RUNTIME_DIR")
+)
+
+; This deactive the typeprof-ls module as there is a version issue.
+(setq lsp-disabled-clients '(typeprof-ls))
+
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
+(add-hook 'js-mode-hook
+          (function (lambda ()
+                      (setq indent-tabs-mode t
+                            tab-width 2))))
